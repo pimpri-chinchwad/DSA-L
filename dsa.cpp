@@ -75,10 +75,11 @@ void play_song(){
 	int x;
 	cout<<"Enter song to play"<<endl;
 	cin>>x;
+	current=header;
 	for(int i=0; i<x;i++){
 		current=current->next;
 	}
-	cout<<"playing song "<<current->name;
+	cout<<"playing song "<<current->name<<"|"<<current->artist<<"|"<<current->duration<<endl;
 }
 
 void display_playlist(){
