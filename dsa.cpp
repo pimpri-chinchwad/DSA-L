@@ -3,28 +3,71 @@
 using namespace std;
 
 struct node{
-    string my_data;
+    string name;
+    string artist;
+    string duration;
+    
     node* next;
 
-    node(string my_data){
-        this->my_data=my_data;
+    node(string name, string artist, string duration){
+        this->name=name;
+        this->artist=artist;
+        this->duration=duration;
         this->next=nullptr;
     }
 };
 
-node* header=new node("first_song");
+node* header=new node("first_song", "", "");
 node* current=header;
 node* last=header;
-string my_data;
+node* temp;
+
+void clearScreen() {
+    // \033[2J clears the screen, \033[H moves cursor to the top-left corner
+    cout << "\033[2J\033[H"; 
+}
+
 
 void display_playlist();
+
+void add_song_at_index(int index){
+	if(index==1){
+		node* nn=new node("1", "1", "1");
+		nn->next=header;
+		header=nn;
+	}
+	else{
+		temp=header;
+		for(int i=1; i<index-1; i++){
+			temp=temp->next;
+		}
+		node* nn=new node("1", "1", "1");
+		nn->next=temp;
+		temp->next=nn;
+	}
+}
+
 void add_song(){
+	string name_temp;
+	string artist_temp;
+	string duration_temp;
+	
 	cout<<"Enter name of song"<<endl;
-	cin>>my_data;
-	node* nn=new node(my_data);
-	last->next=nn;
-	last=nn;
-	cout<<"song "<<my_data<<" added"<<endl;
+	cin.ignore();
+	getline(cin, name_temp);
+	
+	cout<<"Enter artist";
+	getline(cin, artist_temp);
+	
+	cout<<"Enter duration";
+	getline(cin, duration_temp);
+	
+	temp=header;
+	while(temp->next!=nullptr){
+		temp=temp->next;
+	}
+	temp->next=new node(name_temp, artist_temp, duration_temp);
+	cout<<"song "<<name_temp<<","<<artist_temp<<","<<duration_temp<<" added"<<endl;
 }
 
 void play_song(){
@@ -35,14 +78,14 @@ void play_song(){
 	for(int i=0; i<x;i++){
 		current=current->next;
 	}
-	cout<<"playing song "<<current->my_data;
+	cout<<"playing song "<<current->name;
 }
 
 void display_playlist(){
 	current=header->next;
 	int m=1;
 	while(1){
-		cout<<m<<" "<<current->my_data<<endl;
+		cout<<m<<"."<<current->name<<"|"<<current->artist<<"|"<<current->duration<<endl;
 		if(current->next==nullptr){
 			break;
 		}
@@ -56,20 +99,33 @@ void remove_song(int x){
 	for(int i=0; i<x-1;i++){
 		current=current->next;
 	}
-	cout<<"removed "<<current->next->my_data<<endl;
+	cout<<"removed "<<current->next->name<<endl;
 	current->next=current->next->next;
 	
 }
 
 int main(){
+
+	node* nn=new node("one", "one", "one");
+	last->next=nn;
+	last=nn;
+	
+	nn=new node("two", "two", "two");
+	last->next=nn;
+	last=nn;
+
+	int ch;
+	clearScreen();	
 	while(1){
+		
 		cout<<"1. Add song"<<endl;
 		cout<<"2. Remove song"<<endl;
 		cout<<"3. Display Entire Playlist"<<endl;
 		cout<<"4. Play song"<<endl;
+		cout<<"Please Enter choice"<<endl;
 	
-		int ch;
 		cin>>ch;
+		clearScreen();	
 		
 		switch(ch){
 			case 1:
@@ -77,7 +133,7 @@ int main(){
 				break;
 			case 2:
 				display_playlist();
-				cout<<"Enter song to remove"<<endl;
+				cout<<"Enter index of song to remove"<<endl;
 				int x;
 				cin>>x;
 				remove_song(x);
@@ -88,9 +144,18 @@ int main(){
 			case 4:
 				play_song();
 				break;
+			case 5:
+				add_song_at_index(2);
+				break;
 			default:
 				cout<<"Enter valid choice"<<endl;
 				break;
+			}
+			
+			if (cin.fail()) {
+				cin.clear(); // Reset error state
+				cin.ignore(10000, '\n'); // Ignore bad characters until newline
+				continue;
 			}
 	}
 /*
@@ -105,4 +170,4 @@ int main(){
 	
 	display_playlist();*/
 }
-	
+		
