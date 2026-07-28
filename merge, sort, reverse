@@ -1,0 +1,142 @@
+#include <iostream>
+#include <cstdlib>
+using namespace std;
+
+
+
+class node{
+    public:
+    node* previous;
+    int data;
+    node* next;
+    
+    node(int data){
+        this->data=data;
+        previous=nullptr;
+        next=nullptr;
+    }
+};
+
+node* h1=nullptr;	
+node* h2=nullptr;
+node* h3=nullptr;
+
+//display linked list
+void display(node* &header){
+	cout<<"========================================="<<endl;
+    node* temp=header;
+    while(temp!=nullptr){
+        cout<<temp->data<<endl;
+        temp=temp->next;
+    }
+}
+
+//insert text at end
+void insertatend(node* &header, int data){
+    if(header==nullptr){
+        header=new node(data);
+    }
+    else{
+        node* temp=header;
+        while(temp->next!=nullptr){
+            temp=temp->next;
+        }
+        node* nn=new node(data);
+        temp->next=nn;
+        nn->previous=temp;
+    }
+}
+
+void reverse(node* &header){
+	if(header==nullptr){
+		return;
+	}
+	else if(header->next==nullptr){
+		return;
+	}
+	else if(header->next->next==nullptr){
+		header->next->next=header;
+		header=header->next;
+		header->next->next=nullptr;
+	}
+	else{
+		node* one=header;
+		node* two=one->next;
+		node* three=two->next;
+		one->next=nullptr;
+		
+		while(three!=nullptr){
+			two->next=one;
+			one=two;
+			two=three;
+			three=three->next;
+		}
+		
+		two->next=one;
+		header=two;
+		
+	}
+}
+
+void merge(node* &header1, node* &header2){
+	if(header1!=nullptr){
+		node* temp=header1;
+		while(temp->next!=nullptr){
+			temp=temp->next;
+		}
+		temp->next=header2;
+	}
+}
+
+void sort(node* &header){
+	if(header==nullptr){return;}
+	else if(header->next==nullptr){return;}
+	else{
+		int sorted=0;
+		
+		while(sorted!=1){
+			sorted=1;
+			
+			node* one=header;
+			node* two=header->next;
+		
+			while(two!=nullptr){
+			if(one->data>two->data){
+				int temp=one->data;
+				one->data=two->data;
+				two->data=temp;
+				sorted=0;
+				}
+			one=two;
+			two=two->next;
+			}
+		}
+	}
+}
+		
+
+int main(){
+	for(int i=0; i<10; i++){
+		int value = rand() % 100;
+        insertatend(h1, value);	
+        value = rand() % 100;
+        insertatend(h2, value+2);
+    }
+   
+    
+    display(h1);
+    display(h2);
+    
+    merge(h2,h1);
+    display(h2);
+    sort(h2);
+    sort(h1);
+    display(h1);
+    display(h2);	
+    
+    
+    
+    
+    
+    
+}
