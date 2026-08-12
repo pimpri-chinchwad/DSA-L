@@ -1,0 +1,154 @@
+#include <iostream>
+#include <string>
+#include <stack>
+using namespace std;
+
+
+bool isOperator(char c) {
+    switch (c) {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '^':
+        case '%':
+        case '(':
+        case ')':
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool isHigher(char one, char two){
+	if((one=='*'||one=='/')&&(two=='+'||two=='-')){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+
+int main(){
+	
+	stack<char> opStack;
+	stack<char> postfixStack;
+	string myStr;
+	
+	cin>>myStr;
+	
+	int n=myStr.length();
+	
+	char current, temp;
+	for(int i=0; i<n; i++){ 
+		current=myStr[i];
+		/*cout<<current<<"\t";
+		if(isOperator(current)){
+			cout<<"operator";
+			if(current=='('||current==')'){
+				cout<<" and bracket"<<endl;
+			}
+			else{cout<<endl;}
+		}
+		else{
+			cout<<"operand"<<endl;
+		}	*/
+		
+		
+		
+		if (isOperator(current)){
+			operator_label:
+			if(current=='('){
+				opStack.push(current);
+				continue;
+			}
+			if(current==')'){
+				while(opStack.top()!='('){
+					postfixStack.push(opStack.top());
+					opStack.pop();
+				}
+			opStack.pop();
+			continue;
+			}
+			
+			if(opStack.empty()){
+				cout<<"Stack is empty, pushing"<<current<<"in op stack"<<endl;
+				opStack.push(current);
+				
+			}
+			else if(isHigher(current, opStack.top())){
+				cout<<"Higher precedence, pushing"<<current<<"in op stack"<<endl;
+				opStack.push(current);
+				continue;
+			}
+			else if(!(isHigher(current, opStack.top()))){
+				cout<<"Lower precednece, pushing"<<opStack.top()<<"in postfix stack"<<endl;
+				postfixStack.push(opStack.top());
+				opStack.pop();
+				goto operator_label;
+			}
+		}
+		else{
+			cout<<"Operand, pushing"<<current<<"in postfix stack"<<endl;
+			postfixStack.push(current);
+		}
+		
+		
+		
+	}
+	
+	while(!(opStack.empty())){
+		postfixStack.push(opStack.top());
+		opStack.pop();
+	}
+	
+	
+	cout<<"Size:"<<postfixStack.size()<<endl;
+	while(!(postfixStack.empty())){
+		cout<<postfixStack.top()<<endl;
+		postfixStack.pop();
+	}
+	
+}
+
+
+
+
+/*
+
+if (isOperator(current)){
+			operator_label:
+			if(current=='('){
+				opStack.push(current);
+				continue;
+			}
+			else if(current==')'){
+				while(opStack.top()!='('){
+					postfixStack.push(opStack.top());
+					opStack.pop();
+				}
+			continue;
+			}
+			
+			else if(opStack.empty()){
+				opStack.push(current);
+				continue;
+			}
+			else if(isHigher(current, opStack.top())){
+				opStack.push(current);
+				continue;
+			}
+			else if(!(isHigher(current, opStack.top()))){
+				postfixStack.push(opStack.top());
+				opStack.pop();
+				//goto operator_label;
+			}
+		}
+		else{
+			postfixStack.push(current);
+		}
+		
+		
+		
+		*/
