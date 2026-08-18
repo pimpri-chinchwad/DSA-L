@@ -1,0 +1,250 @@
+#include <iostream>
+#include <stack>
+#include <string>
+using namespace std;
+
+bool isHigher(char one, char two){
+	if((one=='*'||one=='/')&&(two=='+'||two=='-')){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+bool isOperator(char c) {
+    switch (c) {
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '^':
+        case '%':
+        case '(':
+        case ')':
+            return true;
+        default:
+            return false;
+    }
+}
+
+void infixToPostfix(){
+	stack<char> opStack;
+	stack<char> postfixStack;
+	string myStr;
+	
+	cin>>myStr;
+	
+	int n=myStr.length();
+	
+	char current, temp;
+	for(int i=0; i<n; i++){
+		current=myStr[i];
+		if (isOperator(current)){
+			operator_label:
+			if(current=='('){
+				opStack.push(current);
+				continue;
+			}
+			if(current==')'){
+				while(opStack.top()!='('){
+					postfixStack.push(opStack.top());
+					opStack.pop();
+				}
+			opStack.pop();
+			continue;
+			}
+			
+			if(opStack.empty()){
+				//cout<<"Stack is empty, pushing"<<current<<"in op stack"<<endl;
+				opStack.push(current);
+				
+			}
+			else if(isHigher(current, opStack.top())){
+				//cout<<"Higher precedence, pushing"<<current<<"in op stack"<<endl;
+				opStack.push(current);
+				continue;
+			}
+			else if(!(isHigher(current, opStack.top()))){
+				//cout<<"Lower precednece, pushing"<<opStack.top()<<"in postfix stack"<<endl;
+				postfixStack.push(opStack.top());
+				opStack.pop();
+				goto operator_label;
+			}
+		}
+		else{
+			//cout<<"Operand, pushing"<<current<<"in postfix stack"<<endl;
+			postfixStack.push(current);
+		}
+		
+		
+		
+	}
+	
+	while(!(opStack.empty())){
+		postfixStack.push(opStack.top());
+		opStack.pop();
+	}
+	
+	
+	cout<<"Size:"<<postfixStack.size()<<endl;
+	while(!(postfixStack.empty())){
+		cout<<postfixStack.top();
+		postfixStack.pop();
+	}
+	
+}
+
+
+void evaluatePostfix(){
+	stack<int> operandStack;
+	string myStr;
+	
+	cin>>myStr;
+	
+	int n=myStr.length();
+	
+	char current, temp;
+	for(int i=0; i<n; i++){ 
+		current=myStr[i]; //current character
+		int op2, op1;
+		
+		
+		if (isOperator(current)){ //operator
+			op2=operandStack.top();
+			operandStack.pop();
+			op1=operandStack.top();
+			operandStack.pop();
+			switch(current){
+				case '+':
+					operandStack.push(op1+op2);
+					break;
+				case '-':
+					operandStack.push(op1-op2);
+					break;
+				case '*':
+					operandStack.push(op1*op2);
+					cout<<"multiplied and result is"<<op1*op2<<endl;
+					break;
+				case '/':
+					operandStack.push(op1/op2);
+					cout<<"divided"<<endl;
+					break;
+			}
+		}
+	
+			
+
+		
+		else{//operand
+			int temp=current-'0';
+			operandStack.push(temp);
+		}
+		
+		
+		
+	}
+	
+	
+	cout<<"Size:"<<operandStack.size()<<endl;
+	
+	cout<<operandStack.top()<<endl;
+	
+	
+}
+
+
+void evaluatePrefix(){
+	stack<int> operandStack;
+	string myStr;
+	
+	cin>>myStr;
+	
+	int n=myStr.length();
+	
+	char current, temp;
+	
+	
+	for(int i=n-1; i>=0	; i--){ 
+		current=myStr[i]; //current character
+		cout<<current<<endl;
+		
+		
+		
+		
+		int op2, op1;
+		
+		
+		if (isOperator(current)){ //operator
+			op1=operandStack.top();
+			operandStack.pop();
+			op2=operandStack.top();
+			operandStack.pop();
+			switch(current){
+				case '+':
+					operandStack.push(op1+op2);
+					break;
+				case '-':
+					operandStack.push(op1-op2);
+					break;
+				case '*':
+					operandStack.push(op1*op2);
+					cout<<"multiplied and result is"<<op1*op2<<endl;
+					break;
+				case '/':
+					operandStack.push((op1/op2)-0);
+					cout<<"divided"<<endl;
+					break;
+			}
+		}
+	
+			
+
+		
+		else{//operand
+			int temp=current-'0';
+			operandStack.push(temp);
+		}
+		
+		
+		
+	}
+	
+	
+	cout<<"Size:"<<operandStack.size()<<endl;
+	
+	//cout<<operandStack.top()<<endl;
+	
+	
+}
+
+
+int main(){
+	int ch;
+	
+	while(1){
+		
+		cout<<"======================================================="<<endl;
+		cout<<"1.Convert Infix to postfix"<<endl;
+		cout<<"2. Evaluate Postfix expression"<<endl;
+		cout<<"3. Evaluate Prefix expression"<<endl;
+		
+		
+		cout<<"Enter choice:";
+		cin>>ch;
+		
+		
+		switch(ch){
+			case 1:
+				cout<<"Enter valid infix expression with valid brackets"<<endl;
+				infixToPostfix();
+				break;
+			case 2:
+				evaluatePostfix();
+				break;
+			case 3:
+				evaluatePrefix();
+				break;
+		}
+	}
+}
