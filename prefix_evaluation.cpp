@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include <stack>
+#include <sstream>
 using namespace std;
 
 
@@ -31,55 +33,47 @@ bool isHigher(char one, char two){
 
 
 int main(){
-	
+	cout<<"Note: Number of operands should be more than no of operators"<<endl;
 	stack<int> operandStack;
 	string myStr;
 	
 	cin>>myStr;
+	string current;
+	int op2, op1;
 	
-	int n=myStr.length();
+	stringstream ss(myStr);
 	
-	char current, temp;
+	vector<string> listOfItems;
 	
+	while (getline(ss, current, ',')) {
+        cout<<current<<endl;
+        listOfItems.push_back(current);}
 	
-	for(int i=n-1; i>=0	; i--){ 
-		current=myStr[i]; //current character
-		cout<<current<<endl;
 		
-		
-		
-		
-		int op2, op1;
-		
-		if(current==','){continue;}
-		else if (isOperator(current)){ //operator
+	for (int i = listOfItems.size() - 1; i >= 0; --i) {	
+		current=listOfItems.at(i);
+		if (current=="+"||current=="-"||current=="*"||current=="/"){ //operator
 			op1=operandStack.top();
 			operandStack.pop();
 			op2=operandStack.top();
 			operandStack.pop();
-			switch(current){
-				case '+':
+			if(current=="+")	
 					operandStack.push(op1+op2);
-					break;
-				case '-':
+			else if(current=="-")
 					operandStack.push(op1-op2);
-					break;
-				case '*':
+			else if(current== "*")
 					operandStack.push(op1*op2);
-					cout<<"multiplied and result is"<<op1*op2<<endl;
-					break;
-				case '/':
-					operandStack.push((op1/op2)-0);
-					cout<<"divided"<<endl;
-					break;
+					
+			else if(current=="/")
+					operandStack.push((op1/op2));
 			}
-		}
+		
 	
 			
 
 		
 		else{//operand
-			int temp=current-'0';
+			int temp=stoi(current);
 			operandStack.push(temp);
 		}
 		
@@ -90,7 +84,7 @@ int main(){
 	
 	cout<<"Size:"<<operandStack.size()<<endl;
 	
-	//cout<<operandStack.top()<<endl;
+	cout<<operandStack.top()<<endl;
 	
 	
 }

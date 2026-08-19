@@ -1,6 +1,8 @@
 #include <iostream>
 #include <stack>
 #include <string>
+#include <vector>
+#include <sstream>
 using namespace std;
 
 bool isHigher(char one, char two){
@@ -95,49 +97,107 @@ void infixToPostfix(){
 	
 }
 
-
+//done
 void evaluatePostfix(){
+	cout<<"Please enter valid postfix expression"<<endl;
+	cout<<"Example: 2,3,*,8,4,/,*"<<endl;
 	stack<int> operandStack;
 	string myStr;
 	
 	cin>>myStr;
+	string current;
 	
-	int n=myStr.length();
-	
-	char current, temp;
-	for(int i=0; i<n; i++){ 
-		current=myStr[i]; //current character
-		int op2, op1;
+	stringstream ss(myStr);
+	int op2, op1;
+    
+    // Read tokens separated by commas
+    while (getline(ss, current, ',')) {
+        //cout<<current<<endl;
+   
 		
 		
-		if (isOperator(current)){ //operator
+		
+		if (current=="+"||current=="-"||current=="*"||current=="/"){ //operator
 			op2=operandStack.top();
 			operandStack.pop();
 			op1=operandStack.top();
 			operandStack.pop();
-			switch(current){
-				case '+':
-					operandStack.push(op1+op2);
-					break;
-				case '-':
+			if(current=="+"){	
+				operandStack.push(op1+op2);}
+			else if(current=="-")
 					operandStack.push(op1-op2);
-					break;
-				case '*':
+				
+				else if(current== "*")
 					operandStack.push(op1*op2);
-					cout<<"multiplied and result is"<<op1*op2<<endl;
-					break;
-				case '/':
-					operandStack.push(op1/op2);
-					cout<<"divided"<<endl;
-					break;
+					
+				else if(current=="/"){
+					operandStack.push((op1/op2));}
+			//cout<<"result: "<<operandStack.top()<<endl;
 			}
-		}
+		
 	
 			
 
 		
 		else{//operand
-			int temp=current-'0';
+			int temp=stoi(current);
+			//cout<<temp<<endl;
+			operandStack.push(temp);
+		}
+		
+		
+		
+	}	
+	
+	
+	//cout<<"Size:"<<operandStack.size()<<endl;
+	cout<<"Result: "<<operandStack.top()<<endl;
+}
+
+//done
+void evaluatePrefix(){
+	cout<<"Please enter valid prefix expression"<<endl<<"Note: Number of operands should be more than no of operators"<<endl;
+	cout<<"Example: +,*,/,+,100,200,2,5,7"<<endl;
+	stack<int> operandStack;
+	string myStr;
+	
+	cin>>myStr;
+	string current;
+	int op2, op1;
+	
+	stringstream ss(myStr);
+	
+	vector<string> listOfItems;
+	
+	while (getline(ss, current, ',')) {
+        cout<<current<<endl;
+        listOfItems.push_back(current);}
+	
+		
+	for (int i = listOfItems.size() - 1; i >= 0; --i) {	
+		current=listOfItems.at(i);
+		if (current=="+"||current=="-"||current=="*"||current=="/"){ //operator
+			op1=operandStack.top();
+			operandStack.pop();
+			op2=operandStack.top();
+			operandStack.pop();
+			if(current=="+")	
+					operandStack.push(op1+op2);
+			else if(current=="-")
+					operandStack.push(op1-op2);
+			else if(current== "*")
+					operandStack.push(op1*op2);
+					
+			else if(current=="/")
+					operandStack.push((op1/op2));
+			}
+		
+	
+			
+
+		
+		else{//operand
+			int temp=stoi(current);
 			operandStack.push(temp);
 		}
 		
@@ -149,73 +209,6 @@ void evaluatePostfix(){
 	cout<<"Size:"<<operandStack.size()<<endl;
 	
 	cout<<operandStack.top()<<endl;
-	
-	
-}
-
-
-void evaluatePrefix(){
-	stack<int> operandStack;
-	string myStr;
-	
-	cin>>myStr;
-	
-	int n=myStr.length();
-	
-	char current, temp;
-	
-	
-	for(int i=n-1; i>=0	; i--){ 
-		current=myStr[i]; //current character
-		cout<<current<<endl;
-		
-		
-		
-		
-		int op2, op1;
-		
-		
-		if (isOperator(current)){ //operator
-			op1=operandStack.top();
-			operandStack.pop();
-			op2=operandStack.top();
-			operandStack.pop();
-			switch(current){
-				case '+':
-					operandStack.push(op1+op2);
-					break;
-				case '-':
-					operandStack.push(op1-op2);
-					break;
-				case '*':
-					operandStack.push(op1*op2);
-					cout<<"multiplied and result is"<<op1*op2<<endl;
-					break;
-				case '/':
-					operandStack.push((op1/op2)-0);
-					cout<<"divided"<<endl;
-					break;
-			}
-		}
-	
-			
-
-		
-		else{//operand
-			int temp=current-'0';
-			operandStack.push(temp);
-		}
-		
-		
-		
-	}
-	
-	
-	cout<<"Size:"<<operandStack.size()<<endl;
-	
-	//cout<<operandStack.top()<<endl;
-	
-	
 }
 
 

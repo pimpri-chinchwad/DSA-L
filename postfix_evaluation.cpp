@@ -4,25 +4,25 @@
 #include <sstream>
 using namespace std;
 
-
-bool isOperator(char c) {
+/*
+bool isOperator(string c) {
     switch (c) {
-        case '+':
-        case '-':
-        case '*':
-        case '/':
-        case '^':
-        case '%':
-        case '(':
-        case ')':
+        case "+":
+        case "-":
+        case "*":
+        case "/":
+        case "^":
+        case "%":
+        case "(":
+        case ")":
             return true;
         default:
             return false;
     }
-}
+}*/
 
-bool isHigher(char one, char two){
-	if((one=='*'||one=='/')&&(two=='+'||two=='-')){
+bool isHigher(string one, string two){
+	if((one=="*"||one=="/")&&(two=="+"||two=="-")){
 		return true;
 	}
 	else{
@@ -37,14 +37,17 @@ int main(){
 	string myStr;
 	
 	cin>>myStr;
-	string item;
+	string current;
 	
 	stringstream ss(myStr);
+	int op2, op1;
     
     // Read tokens separated by commas
-    while (getline(ss, item, ',')) {
-        cout<<item<<endl;
-    }
+    while (getline(ss, current, ',')) {
+        cout<<current<<endl;
+        
+        
+    
 	
 	
 	/*
@@ -56,52 +59,49 @@ int main(){
 		
 		
 		
-		current=myStr[i]; //current character
-		int op2, op1;
+		current=myStr[i]; //current character*/
 		
-		if(current==','){continue;}
-		if (isOperator(current)){ //operator
+		
+		
+		if (current=="+"||current=="-"||current=="*"||current=="/"){ //operator
 			op2=operandStack.top();
 			operandStack.pop();
 			op1=operandStack.top();
 			operandStack.pop();
 			cout<<"operand1:"<<op1<<endl<<"operand2:"<<op2<<endl;
-			switch(current){
-				case '+':
-				
-					operandStack.push(op1+op2);
-					break;
-				case '-':
+			if(current=="+"){	
+				operandStack.push(op1+op2);}
+			else if(current=="-")
 					operandStack.push(op1-op2);
-					break;
-				case '*':
+				
+				else if(current== "*")
 					operandStack.push(op1*op2);
-					cout<<"multiplied and result is"<<op1*op2<<endl;
-					break;
-				case '/':
-					cout<<"operand1:"<<op1<<endl<<"operand2:"<<op2<<endl;
+					
+				else if(current=="/"){
+					//cout<<"operand1:"<<op1<<endl<<"operand2:"<<op2<<endl;
 					//cout<<((op1/op2))<<endl;
-					//operandStack.push((op1/op2)-0);
-					cout<<"divided"<<endl;
-					break;
+					operandStack.push((op1/op2));
+					cout<<"divided"<<endl;}
+			cout<<"result: "<<operandStack.top()<<endl;
 			}
-		}
+		
 	
 			
 
 		
 		else{//operand
-			int temp=current-'0';
-			cout<<temp<<endl;
+			int temp=stoi(current);
+			//cout<<temp<<endl;
 			operandStack.push(temp);
 		}
 		
 		
 		
 	}	
-	*/
+	
 	
 	cout<<"Size:"<<operandStack.size()<<endl;
+	cout<<operandStack.top()<<endl;
 	
 	//cout<<operandStack.top()<<endl;
 	
