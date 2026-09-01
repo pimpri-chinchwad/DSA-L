@@ -37,6 +37,7 @@ class Queue{
 		int x;
 		if(front==nullptr){//no elemenr
 			cout<<"Queue is empty"<<endl;
+			return -1;
 		}
 		else if(front==rear){//one element
 			x=front->data;
@@ -95,22 +96,17 @@ class CircularQueue{
 		}
 	}
 	
-	int dequeue(){
-		int x;
+	void dequeue(){
 		if(tail==nullptr){//no element
 			cout<<"Queue empty"<<endl;
 		}
-		else if(tail->next=tail){ //one element
-			x=tail->data;
+		else if(tail->next==tail){ //one element
 			tail=nullptr;
 			count--;
-			return x;
 		}
 		else{
-			x=tail->next->data;
 			tail->next=tail->next->next;
 			count--;
-			return x;
 		}
 	}
 	
@@ -161,9 +157,10 @@ int main(){
 				}
 				break;
 			case 2://customer done eating
-				data=tables.dequeue();
+				tables.dequeue();
 				if(!waitingList.isEmpty()){//not empty
-					
+					tables.enqueue(waitingList.dequeue());
+				}
 				break;
 			case 3:
 				waitingList.display();
