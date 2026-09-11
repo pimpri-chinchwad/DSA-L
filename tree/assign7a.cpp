@@ -37,6 +37,8 @@ void insert(Node* &root,int value){
 	}
 }
 
+
+
 void inorder(Node* root){
 	if(root==nullptr){
 		return;
