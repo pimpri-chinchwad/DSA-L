@@ -37,7 +37,25 @@ void insert(Node* &root,int value){
 	}
 }
 
-
+void inorderWithoutRecursion(Node* current){
+	if(current==nullptr){return;}
+	stack<Node*> myStack;
+	while(1){
+		if(current!=nullptr){
+			myStack.push(current);
+			current=current->left;
+		}
+		else{
+			if(myStack.empty()){
+				break;
+			}
+			current=myStack.top();
+			cout<<current->val<<endl;
+			current=current->right;
+			myStack.pop();
+		}
+	}
+}
 
 void inorder(Node* root){
 	if(root==nullptr){
