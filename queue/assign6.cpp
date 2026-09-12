@@ -59,7 +59,7 @@ class Queue{
 	void display(){
 		Node* temp=front;
 		while(temp!=nullptr){
-			cout<<temp->data<<endl;
+			cout<<temp->data<<"\t";
 			temp=temp->next;
 		}
 	}
@@ -149,11 +149,13 @@ int main(){
 	
 	while(1){
 		cout<<"========================"<<endl
-			<<"1.Customer Arrival"<<endl
+			<<"Counters: ";counters.display();
+			cout<<endl<<"1.Customer Arrival"<<endl
 			<<"2.Customer to Checkout"<<endl
 			<<"3.Close Checkout Counter"<<endl
 			<<"4.View Customer"<<endl
 			<<"Ctrl+C to Exit"<<endl;
+		
 		cin>>ch;
 		
 		switch(ch){
@@ -170,7 +172,7 @@ int main(){
 				break;
 			case 3:
 				if(counters.isFull()){
-					waitList.enqueue(counters.dequeue());
+					waitingList.enqueue(counters.dequeue());
 				}
 				else if(counters.isEmpty()){
 					//pass
@@ -183,7 +185,7 @@ int main(){
 				
 				break;
 			case 4:
-				waitList.display();
+				waitingList.display();
 				break;
 			default:
 				cout<<"Enter valid input"<<endl;
