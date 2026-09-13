@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stack>
 using namespace std;
 class Node{
 	public:
@@ -135,26 +136,54 @@ int leafnodes(Node* root){
 	return leafnodes(root->left)+leafnodes(root->right);
 }
 
+int leafnodesWithoutRecursion(Node* current){
+	if(current==nullptr){return 0;}
+	int count=0;
+	stack<Node*> myStack;
+	while(1){
+		if(current==nullptr){
+			if(myStack.empty()){break;}
+			current=myStack.top();
+			current=current->right;
+			myStack.pop();
+		}
+		else if(current->left==nullptr&&current->right==nullptr){
+			count++;
+			myStack.push(current);
+			current=current->left;
+		}
+		else{
+			myStack.push(current);
+			current=current->left;
+		}
+	}
+	return count;
+}
+
 int main(){
+	
+	insert(header, 20);
 	insert(header, 10);
 	insert(header, 5);
-	insert(header,2);
-	insert(header, 20);
+	insert(header, 15);
+	insert(header,11);
+	
+	insert(header,1);
+	insert(header, 16);
 	
 	insert(header,30);
-	insert(header, 0);
-	insert(header, 20);
-	
-	insert(header, -1);
-	
-	insert(header,2);
+	insert(header, 40);
 		
-	cout<<"postorder"<<endl;
-	postorder(header);
+	cout<<"inorder traversal(using recursion): "<<endl;
+	inorder(header);
+	cout<<"inorder traversal(without recursion): "<<endl;
+	inorderWithoutRecursion(header);
 	
+	/*
 	cout<<search(header, 22)<<endl;
 	
-	cout<<height(header)<<endl;
+	cout<<height(header)<<endl;*/
 	
-	cout<<"number of leaf nodes: "<<leafnodes(header)<<endl;
+	cout<<"number of leaf nodes(using recursion): "<<leafnodes(header)<<endl;
+	cout<<"number of leaf nodes(without recursion): "<<leafnodesWithoutRecursion(header)<<endl;
 }
