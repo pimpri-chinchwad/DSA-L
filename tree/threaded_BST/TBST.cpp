@@ -58,34 +58,25 @@ class threadedBST{
 			
 	}
 	
+	Node* leftMost(Node* root){
+		if(root==nullptr)return root;
+		while(root->left!=nullptr){
+			root=root->left;
+		}
+		return root;
+	}
+	
 	void inorder(){
-		if(root==nullptr){return;} //check if root null
-		Node* current=root;
+		Node* current=leftMost(root);;
 		
-		while(1){
-			if(current->left==nullptr){
-				if(current->rightThreaded){
-					while(1){
-						if(current->rightThreaded){
-							cout<<current->val<<endl;
-							current=current->right;
-						}
-						else{
-							cout<<current->val<<endl;
-							current=current->right;
-							if(current==nullptr){return;}
-							break;
-						}
-					}
-				}
-				else{
-					cout<<current->val<<endl;
-					if(current->right==nullptr){return;}
-					else{current=current->right;}
-				}
+		while(current!=nullptr){
+			cout<<current->val<<" ";
+			
+			if(current->rightThreaded){
+				current=current->right;
 			}
 			else{
-				current=current->left;
+				current=leftMost(current->right);
 			}
 		}
 	}
