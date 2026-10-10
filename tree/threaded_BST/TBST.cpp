@@ -1,15 +1,18 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
 class Node{
 	public:
 	Node* left;
 	int val;
+	string name;
 	Node* right;
 	bool rightThreaded;
 	
-	Node(int val){
+	Node(int val, string str){
 		this->val=val;
+		this->name=str;
 		left=nullptr;
 		right=nullptr;
 		rightThreaded=false;
@@ -24,10 +27,10 @@ class threadedBST{
 		root=nullptr;
 	}
 	
-	void insert(int val){
-		if(root==nullptr){root=new Node(val);return;}
+	void insert(int val, string str){
+		if(root==nullptr){root=new Node(val, str);return;}
 		Node* current=root;
-		Node* nn=new Node(val);
+		Node* nn=new Node(val, str);
 		
 		while(true){
 			if(val<=current->val){//less than
@@ -67,10 +70,10 @@ class threadedBST{
 	}
 	
 	void inorder(){
-		Node* current=leftMost(root);;
+		Node* current=leftMost(root);
 		
 		while(current!=nullptr){
-			cout<<current->val<<" ";
+			cout<<current->val<<" "<<current->name<<" "<<endl;
 			
 			if(current->rightThreaded){
 				current=current->right;
@@ -87,14 +90,32 @@ class threadedBST{
 int main(){
 	threadedBST t;
 	
-	t.insert(40);
-	t.insert(30);
-	t.insert(25);
-	t.insert(35);
-	t.insert(55);
-	
-	t.inorder();
-	
+	int ch;
+	int id;
+	string name;
+	while(1){
+		cout<<"Enter choice:\n1.Add book\n2.Inorder Traversal of Book\n3.Exit\n";
+		cin>>ch;
+		switch(ch){
+			case 1:
+				cout<<"Enter ID(integer) and name of book(string) respectively";
+				cin>>id;
+				cin>>name;
+				t.insert(id, name);
+				cout<<"Inserted";
+				break;
+			case 2:
+				t.inorder();
+				break;
+			case 3:
+				return 0;
+				break;
+			default:
+				cout<<"Enter correct choice"<<endl;
+				break;
+		}
+	}
+				
 	
 	return 0;
 }
